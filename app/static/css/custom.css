@@ -1,0 +1,91 @@
+/* Styles personnalis?s pour Aula Calendar Manager */
+
+:root {
+    --aula-primary: #2c5aa0;
+    --aula-secondary: #667eea;
+    --aula-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    color: var(--aula-primary) !important;
+}
+
+.btn-aula {
+    background: var(--aula-gradient);
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.btn-aula:hover {
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.child-card {
+    transition: all 0.3s ease;
+    border: 1px solid #e3e6f0;
+    border-radius: 10px;
+}
+
+.child-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.fc-event {
+    border-radius: 6px;
+    border: none;
+    font-size: 0.85em;
+    font-weight: 500;
+}
+
+.fc-event-homework {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+}
+
+.fc-event-class {
+    background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+}
+
+.fc-event-message {
+    background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+}
+
+.card-header {
+    background: var(--aula-gradient);
+    color: white;
+    border-radius: 10px 10px 0 0 !important;
+}
+
+.alert {
+    border-radius: 8px;
+    border: none;
+}
+
+.modal-content {
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.form-control:focus {
+    border-color: var(--aula-secondary);
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+@media (max-width: 768px) {
+    .child-card {
+        margin-bottom: 1rem;
+    }
+    
+    .fc-toolbar {
+        flex-direction: column;
+    }
+    
+    .fc-toolbar-chunk {
+        margin: 0.2em 0;
+    }
+}
