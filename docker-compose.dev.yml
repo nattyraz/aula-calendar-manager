@@ -1,0 +1,23 @@
+# Configuration pour le d?veloppement
+version: '3.8'
+
+services:
+  aula-app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: aula-calendar-app-dev
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite:///./data/aula_calendar.db
+      - DEBUG=True
+      - RELOAD=True
+    volumes:
+      - .:/app
+      - ./logs:/app/logs
+      - ./data:/app/data
+    restart: unless-stopped
+
+  # Version simplifi?e pour le d?veloppement - juste l'app
+  # Pas de PostgreSQL, Redis, Nginx en dev

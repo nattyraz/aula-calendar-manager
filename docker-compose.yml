@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  # Application principale
+  aula-app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: aula-calendar-app
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://aula_user:aula_password@postgres:5432/aula_calendar
+      - REDIS_URL=redis://redis:6379
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - SECRET_KEY=${SECRET_KEY}
+      - DEBUG=False
+    volumes:
+      - ./logs:/app/logs
+      - ./data:/app/data
+      - ./credentials.json:/app/credentials.json:ro
+    depends_on:
+      - postgres
+      - redis
+    restart: unless-stopped
+    networks:
+      - aula-network
+
+  # Base de donn?es PostgreSQL
+  postgres:
+    image: postgres:15-alpine
+    container_name: aula-postgres
+    environment:
+      - POSTGRES_DB=aula_calendar
+      - POSTGRES_USER=aula_user
+      - POSTGRES_PASSWORD=aula_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    networks:
+      - aula-network
+
+  # Redis pour cache et sessions
+  redis:
+    image: redis:7-alpine
+    container_name: aula-redis
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    networks:
+      - aula-network
+
+  # Nginx reverse proxy
+  nginx:
+    image: nginx:alpine
+    container_name: aula-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./app/static:/var/www/static:ro
+    depends_on:
+      - aula-app
+    restart: unless-stopped
+    networks:
+      - aula-network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  aula-network:
+    driver: bridge
